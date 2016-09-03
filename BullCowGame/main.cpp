@@ -12,6 +12,8 @@ FBullCowGame BCGame; // instantiate a new game
 // the entry point for our application
 int main()
 {
+	std::cout << BCGame.GetCurrentTry();
+
 	bool bPlayAgain = false;
 	do {
 		PrintIntro();
@@ -35,6 +37,7 @@ void PrintIntro()
 // loop for the number of turns asking for guesses
 void PlayGame()
 {
+	BCGame.Reset();
 	int MaxTries = BCGame.GetMaxTries();
 
 	for (int i = 1; i <= MaxTries; i++)
