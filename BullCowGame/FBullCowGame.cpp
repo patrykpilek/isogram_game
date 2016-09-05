@@ -6,6 +6,8 @@ int32 FBullCowGame::GetMaxTries() const { return MyMaxTries; }
 int32 FBullCowGame::GetCurrentTry() const { return MyCurrentTry; }
 int32 FBullCowGame::GetHiddenWordLenght() const { return MyHiddenWord.length(); }
 
+bool FBullCowGame::IsGameWon() const { return bGameIsWon; }
+
 void FBullCowGame::Reset()
 {
 	constexpr int32 MAX_TRIES = 8;
@@ -14,12 +16,9 @@ void FBullCowGame::Reset()
 	MyMaxTries = MAX_TRIES;
 	MyHiddenWord = HIDDEN_WORD;
 	MyCurrentTry = 1;
-	return;
-}
+	bGameIsWon = false;
 
-bool FBullCowGame::isGameWon() const
-{
-	return false;
+	return;
 }
 
 EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const
@@ -43,22 +42,20 @@ EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const
 }
 
 // receives a VALID guess, incriments turn, and returns count
-FBullCowCount FBullCowGame::SubmitGuess(FString Guess)
+FBullCowCount FBullCowGame::SubmitValidGuess(FString Guess)
 {
-	// incriment the turn number
 	MyCurrentTry++;
-	// setup a return variable
 	FBullCowCount BullCowCount;
+	int32 WordLenght = MyHiddenWord.length(); // assuming same length as guess
 
-	// loop through all letters in the guess
-	int32 HiddenWordLenght = MyHiddenWord.length();
-	for (int32 MHWChar = 0; MHWChar < HiddenWordLenght; MHWChar++) {
-		// copare letter against the hidden word
-		for (int32 GChar = 0; GChar < HiddenWordLenght; GChar++) {
+	// loop through all letters in the hidden word
+	for (int32 MHWChar = 0; MHWChar < WordLenght; MHWChar++) {
+		// copare letter against the guess
+		for (int32 GChar = 0; GChar < WordLenght; GChar++) {
 			// if they match then
 			if (Guess[GChar] == MyHiddenWord[MHWChar]) {
 				// if they're in the same place
-				if (MHWChar == GChar){
+				if (MHWChar == GChar) {
 					BullCowCount.Bulls++; // incriment bulls
 				} else {
 					BullCowCount.Cows++; // must be a cow
@@ -66,5 +63,15 @@ FBullCowCount FBullCowGame::SubmitGuess(FString Guess)
 			}		
 		}	
 	}
+
+	if (BullCowCount.Bulls == WordLenght)
+	{
+		bGameIsWon = true;
+	}
+	else 
+	{
+		bGameIsWon = false;
+	}
+
 	return BullCowCount;
 }
