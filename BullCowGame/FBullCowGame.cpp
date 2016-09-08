@@ -23,13 +23,13 @@ void FBullCowGame::Reset()
 
 EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const
 {
-	if (false) // if the guess isn't an isogram
+	if (false) // if the guess isn't an isogram 
 	{
-		return EGuessStatus::Not_Iosogram;
+		return EGuessStatus::Not_Iosogram; // TODO write function
 	}
-	else if (false) // if the guess isn't all lowercase
+	else if (false) // if the guess isn't all lowercase 
 	{
-		return EGuessStatus::Not_Lowercase;
+		return EGuessStatus::Not_Lowercase; // TODO write function
 	}
 	else if (Guess.length() != GetHiddenWordLenght()) // if the guess lenght is wrong
 	{
